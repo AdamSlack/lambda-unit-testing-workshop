@@ -13,6 +13,7 @@ module.exports = {
     "!**/coverage/**",
     "!**/node_modules/**",
     "!**/reports/**",
+    "!**/.stryker-tmp/**",
   ],
   coverageReporters: [
     "json",

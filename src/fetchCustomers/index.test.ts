@@ -1,8 +1,15 @@
-import { APIGatewayEventRequestContext, APIGatewayProxyEvent, APIGatewayProxyResult, Callback, Context } from 'aws-lambda'
-import { handler } from './index'
-import axios from 'axios'
+// suppressing middy error cause lazy
+global.console.error = jest.fn(() => {})
 
+import { APIGatewayEventRequestContext, APIGatewayProxyEvent, APIGatewayProxyResult, Callback, Context } from 'aws-lambda'
+import axios from 'axios'
+import logger from '../logger'
+
+import { handler } from './index'
+
+jest.mock('../logger')
 jest.mock('axios')
+
 const mockAxiosGet = jest.spyOn(axios, 'get')
 
 const context = {} as Context
@@ -105,11 +112,15 @@ describe('when request for customers fails', () => {
   beforeEach(async () => {
     mockAxiosGet.mockRejectedValueOnce('fake-error')
     try {
-      let foo = await handler(testEvent, context, callback) as APIGatewayProxyResult
+      await handler(testEvent, context, callback) as APIGatewayProxyResult
     } catch (err) {
       handlerError = err
     }
   });
+  
+  it('should info log the query params', () => {
+    expect(logger).toHaveBeenCalledWith('DEBUG', 'invoked with query params', {})
+  })
 
   it('should make a http request with correct params', () => {
     const expectedUrl = 'https://fake-url.com/customers'
