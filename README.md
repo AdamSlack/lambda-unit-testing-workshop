@@ -18,9 +18,14 @@ There are two things to check:
 
 ## What is Mutation Testing?
 
-Mutation Testing aims to prove that the quality of your code coverage is sufficient. It does this tweaking elements of the codebase before running the suite of unit tests.
+Mutation Testing aims to prove that the quality of your code coverage is sufficient. It does this by changing elements of the codebase before running the suite of unit tests.
 
 If no unit tests fail for a particular change, then that is flagged as a mutant. Mutants indicate an aspect of the code base that was not sufficiently tested.
+
+Typical things that are subject to being mutated includes but definitely not limited to:
+- Objects and values passed to functions
+- Operators (e.g. `>`, `<=`, etc)
+- String literals
 
 ## How can i squash mutants?
 
